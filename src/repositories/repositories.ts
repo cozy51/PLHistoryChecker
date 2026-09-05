@@ -77,7 +77,10 @@ export class IndexedDbPastPLRepository extends BaseRepository<PastPLRecord> impl
   }
   async page(page: number, size: number, field?: 'projectKey'|'pl'|'unitNo'|'unitName', exact?: string) {
     if (field && exact) return this.table.where(field).equals(exact).offset(page * size).limit(size).toArray();
-    return this.table.orderBy('id').offset(page * size).limit(size).toArray();
+    return this.table.orderBy('projectKey').offset(page * size).limit(size).toArray();
+  }
+  distinctProjectKeys(): Promise<string[]> {
+    return this.database.pastPLRecords.orderBy('projectKey').uniqueKeys() as Promise<string[]>;
   }
 }
 
