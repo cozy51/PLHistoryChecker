@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { CsvImport } from '../components/CsvImport';
 import { GoogleDriveSync } from '../components/GoogleDriveSync';
+import { Highlight } from '../components/Highlight';
 import { currentProjectRepository, pastPLRepository, pastProjectRepository } from '../repositories/repositories';
 import { clearConnectionHistoryCache } from '../services/connectionHistoryService';
 import { importPastProjects, importPastProjectsText, importWidePastPL, importWidePastPLText } from '../services/csvImportService';
@@ -63,10 +64,10 @@ export function HistoryDataPage(){
         <th>重複している物件キー</th>
         <th className="sortable" onClick={()=>analysisSortBy('similarityToCurrent')}>類似度（今回物件）<SortIcon active={analysisSort==='similarityToCurrent'} asc={analysisAsc}/></th>
       </tr></thead><tbody>{shownAnalysisRows.slice(0,1000).map(x=><tr key={x.projectKey}>
-        <td>{x.projectKey}</td>
+        <td><Highlight text={x.projectKey} query={analysisSearch}/></td>
         <td>{x.projectCode}</td>
         <td>{x.serial}</td>
-        <td>{x.customerName||'（実績物件未登録）'}</td>
+        <td>{x.customerName?<Highlight text={x.customerName} query={analysisSearch}/>:'（実績物件未登録）'}</td>
         <td><span className={`status ${x.isUnique?'status-yes':'status-no'}`}>{x.isUnique?'✓ユニーク':'⚠重複あり'}</span></td>
         <td>{x.duplicateProjectKeys.join('、')}</td>
         <td>{x.similarityToCurrent}%</td>
@@ -80,7 +81,7 @@ export function HistoryDataPage(){
       <select aria-label="物件キー・客先名で絞り込み" value={field==='projectKey'?search:''} onChange={e=>{setField('projectKey');setSearch(e.target.value);setPage(0)}}><option value="">物件キー・客先名で絞り込み（すべて）</option>{projectKeyOptions.map(key=><option key={key} value={key}>{key} - {customerByProjectCode.get(key.slice(0,5))??'（実績物件未登録）'}</option>)}</select>
       <select value={size} onChange={e=>{setSize(Number(e.target.value));setPage(0)}}>{[100,500,1000].map(n=><option key={n} value={n}>{n}件/ページ</option>)}</select>
     </div></div>
-      <div className="table-wrap history-table"><table><thead><tr><th>物件キー</th><th>客先名（先頭5文字一致）</th><th>ユニットNo</th><th>ユニット名</th><th>PL</th><th className="action-column">操作</th></tr></thead><tbody>{records.map(x=><tr key={x.id}><td>{x.projectKey}</td><td>{customerByProjectCode.get(x.projectKey.slice(0,5))??'（実績物件未登録）'}</td><td>{x.unitNo}</td><td>{x.unitName}</td><td>{x.pl}</td><td className="action-column"><button className="row-delete" onClick={()=>void removePL(x)}>削除</button></td></tr>)}</tbody></table>{!records.length&&<div className="empty">該当データがありません。</div>}</div>
+      <div className="table-wrap history-table"><table><thead><tr><th>物件キー</th><th>客先名（先頭5文字一致）</th><th>ユニットNo</th><th>ユニット名</th><th>PL</th><th className="action-column">操作</th></tr></thead><tbody>{records.map(x=><tr key={x.id}><td><Highlight text={x.projectKey} query={field==='projectKey'?search:''}/></td><td>{customerByProjectCode.get(x.projectKey.slice(0,5))??'（実績物件未登録）'}</td><td><Highlight text={x.unitNo} query={field==='unitNo'?search:''}/></td><td><Highlight text={x.unitName} query={field==='unitName'?search:''}/></td><td><Highlight text={x.pl} query={field==='pl'?search:''}/></td><td className="action-column"><button className="row-delete" onClick={()=>void removePL(x)}>削除</button></td></tr>)}</tbody></table>{!records.length&&<div className="empty">該当データがありません。</div>}</div>
       <div className="pagination"><button disabled={page===0} onClick={()=>setPage(p=>p-1)}>前へ</button><span>{page+1}ページ</span><button disabled={records.length<size} onClick={()=>setPage(p=>p+1)}>次へ</button></div>
     </section>
   </div>;
