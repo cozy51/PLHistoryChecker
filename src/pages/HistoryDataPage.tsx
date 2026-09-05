@@ -11,6 +11,8 @@ import type { ImportMode, PastPLRecord } from '../types/models';
 
 type AnalysisSortKey = 'projectKey'|'customerName'|'isUnique'|'similarityToCurrent';
 
+function SortIcon({active,asc}:{active:boolean;asc:boolean}){return <span className={`sort-icon${active?' active':''}`}>{active?(asc?'▲':'▼'):'⇅'}</span>;}
+
 export function HistoryDataPage(){
   const projectCount=useLiveQuery(()=>pastProjectRepository.count(),[])??0, plCount=useLiveQuery(()=>pastPLRepository.count(),[])??0;
   const projects=useLiveQuery(()=>pastProjectRepository.all(),[])??[];
@@ -50,15 +52,16 @@ export function HistoryDataPage(){
 
     <section className="data-section">
       <div className="section-head"><h3>実績物件ユニーク判定</h3><span className="hint">物件キーごとのユニットNo・PL組み合わせを比較し、重複と今回物件との類似度を判定します。</span></div>
+      <p className="hint">見出しの「⇅」をクリックすると並び替えできます。「類似度（今回物件）」は1回クリックで高い順（▼）に並びます。</p>
       <div className="toolbar compact"><input placeholder="物件キー・客先名で検索" value={analysisSearch} onChange={e=>setAnalysisSearch(e.target.value)}/><span>{shownAnalysisRows.length.toLocaleString()}件表示</span></div>
       <div className="table-wrap history-table"><table><thead><tr>
-        <th onClick={()=>analysisSortBy('projectKey')}>物件キー</th>
+        <th className="sortable" onClick={()=>analysisSortBy('projectKey')}>物件キー<SortIcon active={analysisSort==='projectKey'} asc={analysisAsc}/></th>
         <th>物件コード</th>
         <th>シリアル</th>
-        <th onClick={()=>analysisSortBy('customerName')}>客先名</th>
-        <th onClick={()=>analysisSortBy('isUnique')}>ユニーク判定</th>
+        <th className="sortable" onClick={()=>analysisSortBy('customerName')}>客先名<SortIcon active={analysisSort==='customerName'} asc={analysisAsc}/></th>
+        <th className="sortable" onClick={()=>analysisSortBy('isUnique')}>ユニーク判定<SortIcon active={analysisSort==='isUnique'} asc={analysisAsc}/></th>
         <th>重複している物件キー</th>
-        <th onClick={()=>analysisSortBy('similarityToCurrent')}>類似度（今回物件）</th>
+        <th className="sortable" onClick={()=>analysisSortBy('similarityToCurrent')}>類似度（今回物件）<SortIcon active={analysisSort==='similarityToCurrent'} asc={analysisAsc}/></th>
       </tr></thead><tbody>{shownAnalysisRows.slice(0,1000).map(x=><tr key={x.projectKey}>
         <td>{x.projectKey}</td>
         <td>{x.projectCode}</td>
@@ -68,7 +71,7 @@ export function HistoryDataPage(){
         <td>{x.duplicateProjectKeys.join('、')}</td>
         <td>{x.similarityToCurrent}%</td>
       </tr>)}</tbody></table>{!shownAnalysisRows.length&&<div className="empty">該当データがありません。</div>}</div>
-      {shownAnalysisRows.length>1000&&<p className="hint">先頭1,000件を表示しています。見出しクリックで並び替えできます（類似度は初回クリックで降順）。</p>}
+      {shownAnalysisRows.length>1000&&<p className="hint">先頭1,000件を表示しています。</p>}
     </section>
 
     <section className="data-section"><div className="section-head"><h3>実績PL一覧</h3><div className="toolbar compact">
