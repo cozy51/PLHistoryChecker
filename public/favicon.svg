@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a8fd6"/>
+      <stop offset="0.55" stop-color="#1769aa"/>
+      <stop offset="1" stop-color="#123a5c"/>
+    </linearGradient>
+    <linearGradient id="node" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dceaf6"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3f8fc"/>
+      <stop offset="1" stop-color="#c7dcee"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3fd08a"/>
+      <stop offset="1" stop-color="#1f8a53"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="clip">
+      <rect x="0" y="0" width="512" height="512" rx="112"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#clip)">
+    <rect x="0" y="0" width="512" height="512" fill="url(#bg)"/>
+    <rect x="0" y="0" width="512" height="256" fill="url(#gloss)"/>
+  </g>
+
+  <!-- unit A -->
+  <rect x="106" y="188" width="132" height="172" rx="26" fill="url(#node)"/>
+  <!-- unit B -->
+  <rect x="274" y="188" width="132" height="172" rx="26" fill="url(#node)"/>
+  <!-- connector bar -->
+  <rect x="214" y="249" width="84" height="50" rx="18" fill="url(#bar)"/>
+
+  <!-- verified badge -->
+  <circle cx="374" cy="374" r="72" fill="#123a5c"/>
+  <circle cx="374" cy="374" r="60" fill="url(#badge)"/>
+  <path d="M344 375 L366 397 L408 349" fill="none" stroke="#ffffff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,11 @@
+{
+  "name": "ユニット接続実績チェッカー",
+  "short_name": "PL実績チェッカー",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#1769aa",
+  "background_color": "#f3f6fa",
+  "display": "standalone"
+}
