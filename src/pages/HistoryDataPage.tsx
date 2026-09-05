@@ -54,7 +54,7 @@ export function HistoryDataPage(){
       <div className="section-head"><h3>実績物件ユニーク判定</h3><span className="hint">物件キーごとのユニットNo・PL組み合わせを比較し、重複と今回物件との類似度を判定します。</span></div>
       <p className="hint">見出しの「⇅」をクリックすると並び替えできます。「類似度（今回物件）」は1回クリックで高い順（▼）に並びます。</p>
       <div className="toolbar compact"><input placeholder="物件キー・客先名で検索" value={analysisSearch} onChange={e=>setAnalysisSearch(e.target.value)}/><span>{shownAnalysisRows.length.toLocaleString()}件表示</span></div>
-      <div className="table-wrap history-table"><table><thead><tr>
+      <div className="table-wrap analysis-table"><table><thead><tr>
         <th className="sortable" onClick={()=>analysisSortBy('projectKey')}>物件キー<SortIcon active={analysisSort==='projectKey'} asc={analysisAsc}/></th>
         <th>物件コード</th>
         <th>シリアル</th>
