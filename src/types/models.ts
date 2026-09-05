@@ -9,3 +9,5 @@ export interface ConnectionHistoryResult { status: HistoryStatus; count: number;
 export interface ImportWarning { row?: number; message: string }
 export interface ImportProgress { phase: string; processed: number; total: number; percent: number; elapsedMs: number }
 export type ImportMode = 'replace' | 'append';
+export interface DriveSettings { key: 'app'; appFolderId?: string; backupFileId?: string; lastSyncedAt?: string }
+export interface DriveBackupPayload { version: 1; exportedAt: string; pastProjects: PastProject[]; pastPLRecords: PastPLRecord[] }

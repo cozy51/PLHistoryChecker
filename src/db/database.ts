@@ -1,11 +1,12 @@
 import Dexie, { type EntityTable } from 'dexie';
 import { UNIT_MASTER } from '../data/unitMaster';
-import type { CurrentPLRecord, LegacyCurrentUnitRecord, PastPLRecord, PastProject } from '../types/models';
+import type { CurrentPLRecord, DriveSettings, LegacyCurrentUnitRecord, PastPLRecord, PastProject } from '../types/models';
 
 export class UnitConnectionHistoryDatabase extends Dexie {
   currentPLs!: EntityTable<CurrentPLRecord, 'id'>;
   pastProjects!: EntityTable<PastProject, 'id'>;
   pastPLRecords!: EntityTable<PastPLRecord, 'id'>;
+  driveSettings!: EntityTable<DriveSettings, 'key'>;
 
   constructor(name = 'UnitConnectionHistoryDB') {
     super(name);
@@ -71,6 +72,12 @@ export class UnitConnectionHistoryDatabase extends Dexie {
       await transaction.table<PastPLRecord>('pastPLRecords').where('unitNo').anyOf('23', '24').modify(record => {
         record.unitName = unitNames.get(record.unitNo) ?? record.unitName;
       });
+    });
+    this.version(8).stores({
+      currentPLs: 'id, pl',
+      pastProjects: '++id, &projectCode',
+      pastPLRecords: '++id, &uniqueKey, projectKey, pl, unitNo, unitName, [pl+projectKey]',
+      driveSettings: 'key',
     });
   }
 }
